@@ -23,7 +23,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			loadContacts: () => {
 				fetch("https://playground.4geeks.com/contact/agendas/jcamposg6991/contacts")
 					.then(response => response.json())
-					.then(data => console.log(data.contacts))
+					// .then(data => console.log(data.contacts))
 					.then(data => setStore({ contacts: data.contacts }))
 					.catch(error => console.log(error))
 			},
