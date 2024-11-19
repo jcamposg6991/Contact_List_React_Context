@@ -2,13 +2,13 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import PropTypes, { element } from "prop-types";
 import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const UpdateContact = props => {
     const { store, actions } = useContext(Context);
     const params = useParams();
-    console.log(store.contacts);
-    console.log(params);
-     const [inputName, setInputName] = useState(store.contacts[params.theid].name);
+    const navigate = useNavigate();
+    const [inputName, setInputName] = useState(store.contacts[params.theid].name);
     const [inputEmail, setInputEmail] = useState(store.contacts[params.theid].email);
     const [inputPhone, setInputPhone] = useState(store.contacts[params.theid].phone);
     const [inputAddress, setInputAddress] = useState(store.contacts[params.theid].address);
@@ -24,7 +24,7 @@ export const UpdateContact = props => {
                             className="form-control"
                             id="fullName"
                             placeholder="Type full name"
-                           value={inputName}
+                            value={inputName}
                             onChange={(event) => setInputName(event.target.value)}
                         />
                     </div>
@@ -69,16 +69,13 @@ export const UpdateContact = props => {
                             <button
                                 type="submit"
                                 className="btn btn-primary w-100"
-                                // onClick={() => {
-                                //     actions.addContact(inputName, inputEmail, inputPhone, inputAddress)
-                                //         .then(() => {
-                                //             setInputName("");
-                                //             setInputEmail("");
-                                //             setInputPhone("");
-                                //             setInputAddress("");
-                                //         })
-                                //         .catch((error) => console.log(error));
-                                // }}
+                            onClick={() => {
+                                actions.UpdateContact(inputName, inputEmail, inputPhone, inputAddress, store.contacts[params.theid].id)
+                                    .then(() => {
+                                        navigate("/");
+                                    })
+                                    .catch((error) => console.log(error));
+                            }}
                             >
                                 Update
                             </button>
@@ -92,5 +89,5 @@ export const UpdateContact = props => {
 };
 
 UpdateContact.propTypes = {
-	match: PropTypes.object
+    match: PropTypes.object
 };

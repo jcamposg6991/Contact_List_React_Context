@@ -13,10 +13,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.log(error))
 			},
 
-			addContact: (name, email, phone, address) => {
+			addContact: (name, email, phone, address, contacId) => {
 				if (name.trim() !== "" && email.trim() !== "" && phone.trim() !== "" && address.trim() !== "") {
 					return fetch("https://playground.4geeks.com/contact/agendas/jcamposg6991/contacts", {
 						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							name: name,
+							phone: phone,
+							email: email,
+							address: address,
+						}),
+					})
+						.then((newContact) => {
+							const store = getStore();
+							setStore({
+								contacts: [...store.contacts, newContact],
+							});
+							console.log("Contact added successfully:", newContact);
+						})
+						.catch((error) => console.log(error));
+				}
+				console.log("No contact added");
+			},
+
+
+			updateContact: (name, email, phone, address, contactId) => {
+				if (name.trim() !== "" && email.trim() !== "" && phone.trim() !== "" && address.trim() !== "") {
+					return fetch(`https://playground.4geeks.com/contact/agendas/jcamposg6991/contacts/${contactId}`, {
+						method: "PUT",
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({
 							name: name,
@@ -32,16 +57,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			deleteContact: (contactId) => {
-				return fetch("https://playground.4geeks.com/contact/agendas/jcamposg6991/contacts/" + contactId, {
+				return fetch(`https://playground.4geeks.com/contact/agendas/jcamposg6991/contacts/${contactId}`, {
 					method: "DELETE",
 					headers: {
-						"Content-Type": "application/json"
-					}
+						"Content-Type": "application/json",
+					},
 				})
 					.then((response) => response)
-					.then((data) => setStore(data))
+					.then(() => {
+						const store = getStore();
+						const updatedContacts = store.contacts.filter(contact => contact.id !== contactId);
+						setStore({ contacts: updatedContacts });
+					})
 					.catch((error) => console.log(error));
 			},
+
 
 			createAgenda: () => {
 				fetch("https://playground.4geeks.com/contact/agendas/jcamposg6991", {
