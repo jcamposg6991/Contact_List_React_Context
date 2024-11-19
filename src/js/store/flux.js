@@ -13,7 +13,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.log(error))
 			},
 
-			addContact: (name, email, phone, address, contacId) => {
+			addContact: (name, email, phone, address) => {
 				if (name.trim() !== "" && email.trim() !== "" && phone.trim() !== "" && address.trim() !== "") {
 					return fetch("https://playground.4geeks.com/contact/agendas/jcamposg6991/contacts", {
 						method: "POST",
