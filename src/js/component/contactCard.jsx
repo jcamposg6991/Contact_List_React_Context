@@ -5,6 +5,7 @@ export const ContactCard = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
+        actions.createAgenda();
         actions.loadContacts();
     }, []);
 
@@ -23,7 +24,8 @@ export const ContactCard = () => {
                     </div>
                     <div className="col-lg-2 col-3 d-flex align-items-center justify-content-around">
                         <i className="fa-solid fa-pen-to-square fs-2"></i>
-                        <i className="fa-solid fa-trash fs-2"></i>
+                        <button className="border border-0" onClick={()=>{actions.deleteContact(item.id)
+                        }}><i className="fa-solid fa-trash fs-2" ></i></button>
                     </div>
                 </div>
             ))}
