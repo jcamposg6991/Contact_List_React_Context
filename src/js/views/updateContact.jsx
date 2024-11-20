@@ -1,24 +1,42 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import PropTypes, { element } from "prop-types";
-import { Link, useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
-export const UpdateContact = props => {
+export const UpdateContact = () => {
     const { store, actions } = useContext(Context);
     const params = useParams();
     const navigate = useNavigate();
-    const [inputName, setInputName] = useState(store.contacts[params.theid].name);
-    const [inputEmail, setInputEmail] = useState(store.contacts[params.theid].email);
-    const [inputPhone, setInputPhone] = useState(store.contacts[params.theid].phone);
-    const [inputAddress, setInputAddress] = useState(store.contacts[params.theid].address);
+
+    useEffect(() => {
+        actions.loadContacts();
+    }, []);
+
+    const [id] = useState(store.contacts[params.theid]?.id || "");
+    const [inputName, setInputName] = useState(store.contacts[params.theid]?.name || "");
+    const [inputEmail, setInputEmail] = useState(store.contacts[params.theid]?.email || "");
+    const [inputPhone, setInputPhone] = useState(store.contacts[params.theid]?.phone || "");
+    const [inputAddress, setInputAddress] = useState(store.contacts[params.theid]?.address || "");
+
+    const handleSubmit = (event) => {
+        event.preventDefault(); // Evita el comportamiento por defecto de recargar la página.
+
+        actions
+            .updateContact(inputName, inputEmail, inputPhone, inputAddress, id)
+            .then(() => {
+                navigate("/"); // Redirige a la página principal tras la actualización.
+            })
+            .catch((error) => console.error("Error updating contact:", error));
+    };
 
     return (
         <div className="row">
             <div className="col-lg-4 col-10 m-auto">
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="mb-3">
-                        <h5><label htmlFor="fullName" className="form-label">Full Name</label></h5>
+                        <h5>
+                            <label htmlFor="fullName" className="form-label">Full Name</label>
+                        </h5>
                         <input
                             type="text"
                             className="form-control"
@@ -29,7 +47,9 @@ export const UpdateContact = props => {
                         />
                     </div>
                     <div className="mb-3">
-                        <h5><label htmlFor="email" className="form-label">Email</label></h5>
+                        <h5>
+                            <label htmlFor="email" className="form-label">Email</label>
+                        </h5>
                         <input
                             type="email"
                             className="form-control"
@@ -40,7 +60,9 @@ export const UpdateContact = props => {
                         />
                     </div>
                     <div className="mb-3">
-                        <h5><label htmlFor="phone" className="form-label">Phone</label></h5>
+                        <h5>
+                            <label htmlFor="phone" className="form-label">Phone</label>
+                        </h5>
                         <input
                             type="text"
                             className="form-control"
@@ -51,7 +73,9 @@ export const UpdateContact = props => {
                         />
                     </div>
                     <div className="mb-3">
-                        <h5><label htmlFor="address" className="form-label">Address</label></h5>
+                        <h5>
+                            <label htmlFor="address" className="form-label">Address</label>
+                        </h5>
                         <input
                             type="text"
                             className="form-control"
@@ -66,20 +90,7 @@ export const UpdateContact = props => {
                             <Link to="/" className="btn btn-success w-100">Back</Link>
                         </div>
                         <div className="col-6 text-end">
-                            <button
-                                type="submit"
-                                className="btn btn-primary w-100"
-                            onClick={() => {
-                                actions.UpdateContact(inputName, inputEmail, inputPhone, inputAddress, store.contacts[params.theid].id)
-                                    .then(() => {
-                                        navigate("/");
-                                    })
-                                    .catch((error) => console.log(error));
-                            }}
-                            >
-                                Update
-                            </button>
-
+                            <button type="submit" className="btn btn-primary w-100">Update</button>
                         </div>
                     </div>
                 </form>
@@ -89,5 +100,5 @@ export const UpdateContact = props => {
 };
 
 UpdateContact.propTypes = {
-    match: PropTypes.object
+    match: PropTypes.object,
 };
