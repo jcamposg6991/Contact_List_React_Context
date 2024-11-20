@@ -19,12 +19,12 @@ export const UpdateContact = () => {
     const [inputAddress, setInputAddress] = useState(store.contacts[params.theid]?.address || "");
 
     const handleSubmit = (event) => {
-        event.preventDefault(); // Evita el comportamiento por defecto de recargar la página.
+        event.preventDefault();
 
         actions
             .updateContact(inputName, inputEmail, inputPhone, inputAddress, id)
             .then(() => {
-                navigate("/"); // Redirige a la página principal tras la actualización.
+                navigate("/");
             })
             .catch((error) => console.error("Error updating contact:", error));
     };

@@ -14,8 +14,8 @@ export const ContactCard = () => {
     }, []);
 
     const handleDelete = (contactId) => {
-        actions.deleteContact(contactId); // Llama a la acción para eliminar el contacto
-        setShowModal(false); // Cierra el modal después de eliminar
+        actions.deleteContact(contactId); 
+        setShowModal(false); 
     };
 
     return (
