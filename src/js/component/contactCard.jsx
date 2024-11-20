@@ -36,7 +36,7 @@ export const ContactCard = () => {
                             <i className="fa-solid fa-pen-to-square fs-2"></i>
                         </Link>
                         <button
-                            className="border border-0 bg-light"
+                            className="border border-0 bg-light me-2"
                             onClick={() => {
                                 setContactToDelete(item);
                                 setShowModal(true);
