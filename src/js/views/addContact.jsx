@@ -66,10 +66,11 @@ export const AddContact = () => {
                             <button
                                 type="submit"
                                 className="btn btn-primary w-100"
-                                onClick={() => {
+                                onClick={(event) => {
+                                    event.preventDefault();
                                     actions.addContact(inputName, inputEmail, inputPhone, inputAddress)
                                         .then(() => {
-                                            navigate("/");
+                                            navigate("/")
                                         })
                                         .catch((error) => console.log(error));
                                 }}
