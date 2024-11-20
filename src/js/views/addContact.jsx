@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 export const AddContact = () => {
     const { store, actions } = useContext(Context);
@@ -8,6 +8,7 @@ export const AddContact = () => {
     const [inputEmail, setInputEmail] = useState("");
     const [inputPhone, setInputPhone] = useState("");
     const [inputAddress, setInputAddress] = useState("");
+    const navigate = useNavigate();
 
     return (
         <div className="row">
@@ -68,10 +69,7 @@ export const AddContact = () => {
                                 onClick={() => {
                                     actions.addContact(inputName, inputEmail, inputPhone, inputAddress)
                                         .then(() => {
-                                            setInputName("");
-                                            setInputEmail("");
-                                            setInputPhone("");
-                                            setInputAddress("");
+                                            navigate("/");
                                         })
                                         .catch((error) => console.log(error));
                                 }}
